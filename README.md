@@ -5,8 +5,7 @@
 - '/start' - greetings
 - '/help' - reference
 - '/scan' - scanning the contents of a file or link in a message (you need to reply to the message and specify a command before sending it to the chat)
-- '/start_stream_scanning' - start scanning at a specific interval (by default, the command processor mode works)
-- '/stop_stream_scanning' - restoring command processor mode
+
 
 ## Ideas
 
