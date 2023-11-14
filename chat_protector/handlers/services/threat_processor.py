@@ -5,19 +5,18 @@ import requests
 from telegram import Update
 
 from chat_protector.config import FOLDER_FOR_FILES
-from chat_protector.services.exceptions import ApiError
-from chat_protector.services.file_downloader import download
-from chat_protector.services.message_senders import (reply_to_message, send_message)
-from chat_protector.services.analysis import (ping_urls, url_analysis, file_analysis)
+from chat_protector.handlers.services.file_downloader import download
+from chat_protector.handlers.services.message_senders import (reply_to_message, send_message)
+from chat_protector import analysis
 
 
-async def initializer(update: Update, file_id=None, file_name=None, urls=None):
+async def process_and_report_threats(update: Update, file_id=None, file_name=None, urls=None):
     threat_detected = False
 
     async def process_file(file_path):
         nonlocal threat_detected
         try:
-            result = await file_analysis(file_path)
+            result = await analysis.file_analysis(file_path)
             if result:
                 threat_detected = True
                 for file, values in result.items():
@@ -35,8 +34,8 @@ async def initializer(update: Update, file_id=None, file_name=None, urls=None):
     async def process_url(url):
         nonlocal threat_detected
         try:
-            if ping_urls(url):
-                result = await url_analysis(url)
+            if analysis.ping_urls(url):
+                result = await analysis.url_analysis(url)
                 if result:
                     threat_detected = True
                     for link, values in result.items():
@@ -49,7 +48,7 @@ async def initializer(update: Update, file_id=None, file_name=None, urls=None):
                 await reply_to_message(update, 'It is impossible to connect to the host because it does not found')
         except requests.exceptions.RequestException:
             await reply_to_message(update, 'It is impossible to connect to the host because it does not exist')
-        except ApiError:
+        except analysis.ApiError:
             await send_message(update, 'Problems with API operation')
 
     if file_id:

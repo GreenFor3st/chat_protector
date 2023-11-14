@@ -7,4 +7,3 @@ async def reply_to_message(update: Update, text: str):
 
 async def send_message(update: Update, text: str):
     await update.message.reply_text(text)
-

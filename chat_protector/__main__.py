@@ -10,11 +10,12 @@ from telegram.ext import (
 from chat_protector.config import (
     TELEGRAM_BOT_TOKEN,
     TELEGRAM_CHAT_ID,
-    VIRUS_TOTAL_APIKEY
+    VIRUS_TOTAL_APIKEY,
+    stream_mode
 )
 
-from chat_protector.services_manager import target_finder
-from chat_protector.services.errors import error
+from chat_protector import handlers
+from chat_protector.handlers.services.errors import error
 
 
 logging.basicConfig(
@@ -34,12 +35,12 @@ if __name__ == "__main__":
 
     app = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
 
-    app.add_handler(MessageHandler(filters.ALL, target_finder))
     # app.add_handler(CommandHandler('/start', start))
     # app.add_handler(CommandHandler('/help', help))
-    # app.add_handler(CommandHandler('/scan', scan))
-    # app.add_handler(CommandHandler('/start_stream_scanning', start_stream_scanning))
-    # app.add_handler(CommandHandler('/stop_stream_scanning', stop_stream_scanning))
+    if stream_mode:
+        app.add_handler(MessageHandler(filters.ALL, handlers.scan))
+    else:
+        app.add_handler(CommandHandler('scan', handlers.scan))
 
     # errors
     app.add_error_handler(error)

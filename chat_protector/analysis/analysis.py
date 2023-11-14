@@ -3,7 +3,7 @@ from vt import Client
 
 from chat_protector.config import VIRUS_TOTAL_APIKEY
 
-from chat_protector.services.exceptions import ApiError
+from chat_protector.analysis.exceptions import ApiError
 
 
 async def file_analysis(file_path) -> dict or None:

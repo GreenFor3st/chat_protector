@@ -1,5 +1,3 @@
-import datetime
-
 from chat_protector.config import (TELEGRAM_BOT_TOKEN,
                                    FOLDER_FOR_FILES)
 
