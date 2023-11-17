@@ -10,7 +10,7 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = int(os.getenv("TELEGRAM_CHAT_ID", "0"))
 
 BASE_DIR = Path(__file__).resolve().parent
-
-FOLDER_FOR_FILES = 'handlers/services/download/'
+TEMPLATES_DIR = BASE_DIR / "templates"
+FILES_CASH_DIR = BASE_DIR / "services/download/"
 
 stream_mode = True

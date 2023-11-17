@@ -17,6 +17,10 @@ from chat_protector.config import (
 from chat_protector import handlers
 from chat_protector.handlers.services.errors import error
 
+COMMAND_HANDLERS = {
+    "help": handlers.help_,
+}
+
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -35,8 +39,9 @@ if __name__ == "__main__":
 
     app = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
 
-    # app.add_handler(CommandHandler('/start', start))
-    # app.add_handler(CommandHandler('/help', help))
+    for command_name, command_handler in COMMAND_HANDLERS.items():
+        app.add_handler(CommandHandler(command_name, command_handler))
+
     if stream_mode:
         app.add_handler(MessageHandler(filters.ALL, handlers.scan))
     else:

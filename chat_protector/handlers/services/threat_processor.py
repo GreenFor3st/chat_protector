@@ -4,7 +4,7 @@ import time
 import requests
 from telegram import Update
 
-from chat_protector.config import FOLDER_FOR_FILES
+from chat_protector.config import FILES_CASH_DIR
 from chat_protector.handlers.services.file_downloader import download
 from chat_protector.handlers.services.message_senders import (reply_to_message, send_message)
 from chat_protector import analysis
@@ -20,7 +20,7 @@ async def process_and_report_threats(update: Update, file_id=None, file_name=Non
             if result:
                 threat_detected = True
                 for file, values in result.items():
-                    await reply_to_message(update, f'{file}'
+                    await reply_to_message(update, f'{file}\n'
                                                    f'malicious: {values["malicious"]}\n'
                                                    f'suspicious: {values["suspicious"]}')
             if not threat_detected:
@@ -53,9 +53,9 @@ async def process_and_report_threats(update: Update, file_id=None, file_name=Non
 
     if file_id:
         await download(file_id, file_name)
-        files = os.listdir(FOLDER_FOR_FILES)
+        files = os.listdir(FILES_CASH_DIR)
         for file_name in files:
-            file_path = os.path.join(FOLDER_FOR_FILES, file_name)
+            file_path = os.path.join(FILES_CASH_DIR, file_name)
             await reply_to_message(update, 'Processing')
             await process_file(file_path)
             await reply_to_message(update, 'Processing complete')
@@ -66,4 +66,4 @@ async def process_and_report_threats(update: Update, file_id=None, file_name=Non
             await reply_to_message(update, 'Processing')
             await process_url(url)
             await reply_to_message(update, 'Processing complete')
-            time.sleep(15)
+            time.sleep(30)
