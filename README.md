@@ -2,7 +2,6 @@
 
 ## Commands:
 
-- '/start' - greetings
 - '/help' - reference
 - '/scan' - scanning the contents of a file or link in a message (you need to reply to the message and specify a command before sending it to the chat)
 
