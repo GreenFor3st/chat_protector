@@ -47,8 +47,6 @@ if __name__ == "__main__":
     else:
         app.add_handler(CommandHandler('scan', handlers.scan))
 
-    # errors
     app.add_error_handler(error)
 
-    # start
     app.run_polling(poll_interval=1)
